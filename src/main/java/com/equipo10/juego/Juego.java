@@ -4,7 +4,7 @@
 
 package com.equipo10.juego;
 
-import com.equipo10.juego.Vista.Ventana;
+import com.equipo10.juego.Vista.Login;
 
 /**
  *
@@ -13,7 +13,7 @@ import com.equipo10.juego.Vista.Ventana;
 public class Juego {
 
     public static void main(String[] args) {
-        Ventana ventana=new Ventana();
+        Login ventana=new Login();
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }

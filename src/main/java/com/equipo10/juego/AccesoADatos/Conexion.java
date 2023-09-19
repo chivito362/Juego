@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.equipo10.juego.Logica;
+package com.equipo10.juego.AccesoADatos;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,22 +17,18 @@ import javax.swing.JOptionPane;
  * @author Sebastian
  */
 public class Conexion {
-    private  static final String url = "jdbc:mariadb://localhost:3306/";
-    private static final String db = "pj";
-    private static final String usuario = "root";
-    private static final String contrasenia= "";
+    private  static final String url = "jdbc:mysql://192.168.0.16:3306/";
+    private static final String usuario = "Rastas";
+    private static final String contrasenia= "12345678";
     private static Connection conexion;
 
     private Conexion() {
     } 
 
         
-        public static Connection getConexion () {
-            
-            if (conexion == null) {
-                
+        public static Connection getConexion (String db) {
                 try {
-                    Class.forName("org.mariadb.jdbc.Driver");
+                    Class.forName("com.mysql.cj.jdbc.Driver");
                     
                     //establecer la conexion
                     
@@ -43,11 +39,11 @@ public class Conexion {
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Error de conexion");
                 }
-                
-            }
+
         return conexion;
             
     }
+        
 }
     
 
