@@ -124,13 +124,18 @@ public class Ventana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
-        if(comprobarCaja()){
-        double rPj= (double) (Math.random()*10000);
-        int rRare=(int) (Math.random()*50+1);
+        if (comprobarCaja()) {
+            double rPj = (double) (Math.random() * 10000);
+            int rRare = (int) (Math.random() * 50 + 1);
+            
+            String Rare = cargarRareza(rRare);
+            int idpj = cargarPj(rPj);
+            
+            lbRare.setText(Rare);
 
-        cargarRareza(rRare);
-        cargarPj(rPj);
-        }else{
+            guardarEnInventario(idpj, Rare);
+
+        } else {
             JOptionPane.showMessageDialog(null, "Tiene que esperar 24HS desde la ultima caja para poder abrir otra");
         }
 
@@ -182,38 +187,45 @@ public class Ventana extends javax.swing.JFrame {
         return null;
     }
     
-    private void cargarRareza(int rRare){
+    private String cargarRareza(int rRare){
          if(rRare>49){
-            lbRare.setText("EXELENT");
             lbRare.setForeground(new java.awt.Color(255, 0, 0)); //Rojo
+            return "EXELENT";
         }else if(rRare>47){
-            lbRare.setText("ULTRA");
             lbRare.setForeground(new java.awt.Color(153, 0, 153));//Violeta
+            return "ULTRA";
         }else if(rRare>43){
-            lbRare.setText("RARE");
             lbRare.setForeground(new java.awt.Color(0, 204, 255));//Celeste
+            return "RARE";
         }else if(rRare>26){
-            lbRare.setText("UNCOMMON");
             lbRare.setForeground(new java.awt.Color(0, 0, 255));//Azul
+            return "UNCOMMON";
         }else{
-            lbRare.setText("NORMAL");
             lbRare.setForeground(new java.awt.Color(0, 255, 0));//Verde
+            return "NORMAL";
         }
         
     }
     
-    private void cargarPj(double rPj){
+    private int cargarPj(double rPj){
         if(rPj >=6000 && rPj <=7000){
-            SetImageLabel(lbImagen, traerImagenBD(2));
+            int id=2;
+            SetImageLabel(lbImagen, traerImagenBD(id));
             lbNombre.setText("Roronoa Zoro");
+            return id;
         }else if(rPj >7000 && rPj <=7100){
-           SetImageLabel(lbImagen, traerImagenBD(3));
+            int id=3;
+           SetImageLabel(lbImagen, traerImagenBD(id));
            lbNombre.setText("Shanks");
+           return id;
         }else{
-            SetImageLabel(lbImagen, traerImagenBD(1));
+            int id=1;
+            SetImageLabel(lbImagen, traerImagenBD(id));
            lbNombre.setText("Monkey D.Luffy");
+           return id;
         }
     }
+    
     private boolean comprobarCaja(){
         Connection con = Conexion.getConexion("chests");
 
@@ -257,6 +269,52 @@ public class Ventana extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "imposible conectar tabla chests " + ex.fillInStackTrace());
         }
         return false;
+    }
+    
+    private void guardarEnInventario(int id,String rareza){
+        Connection con=Conexion.getConexion("inventarios");
+         int id_inv=inventario_id();
+         if(id_inv!=-1){
+        String sql="INSERT INTO contenido (id_inventario,id_personaje,Rareza) Values (?,?,?)";
+            try {
+                PreparedStatement ps=con.prepareStatement(sql);
+                ps.setInt(1, id_inv);
+                ps.setInt(2, id);
+                ps.setString(3, rareza);
+                ps.executeUpdate();
+                
+                ps.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "error al ingrsar a la tabla contenidos "+ex.fillInStackTrace());
+            }
+   
+         }
+    }
+    private int inventario_id(){
+        Connection con=Conexion.getConexion("inventarios");
+        //El usuario ya tiene inventario?
+        String sql="Select id_inventario From inventario where id_us=?";
+        try {
+            PreparedStatement ps=con.prepareStatement(sql);
+            ps.setInt(1, user.getId_us());
+            ResultSet rs=ps.executeQuery();
+            //si tiene retorno el id del inventario del usuario
+            if(rs.next()){
+                return rs.getInt(1);
+            }else{ //si no tiene lo creo y devuelvo el id del inventario
+                PreparedStatement insertar=con.prepareStatement("INSERT INTO inventario (id_us) Values (?)",Statement.RETURN_GENERATED_KEYS);
+                insertar.setInt(1, user.getId_us());
+                insertar.executeUpdate();
+                ResultSet resultado=insertar.getGeneratedKeys();
+                if(resultado.next()){
+                return resultado.getInt(1);
+                }
+            }
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "error al ingrsar a la tabla inventario "+ex.fillInStackTrace());
+        }
+        return -1;
     }
     class FondoPanel extends JPanel{
     private Image imagen;

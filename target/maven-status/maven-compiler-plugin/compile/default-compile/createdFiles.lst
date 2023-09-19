@@ -1,5 +1,10 @@
-com\equipo10\juego\Vista\Ventana.class
 com\equipo10\juego\Juego.class
+com\equipo10\juego\Vista\Login$2.class
 com\equipo10\juego\AccesoADatos\Conexion.class
 com\equipo10\juego\Vista\Ventana$1.class
+com\equipo10\juego\Vista\Login.class
+com\equipo10\juego\Vista\Ventana.class
+com\equipo10\juego\AccesoADatos\UserData.class
+com\equipo10\juego\Entidades\Usuario.class
+com\equipo10\juego\Vista\Login$1.class
 com\equipo10\juego\Vista\Ventana$FondoPanel.class
