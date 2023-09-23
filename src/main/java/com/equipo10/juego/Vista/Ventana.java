@@ -2,8 +2,8 @@ package com.equipo10.juego.Vista;
 
 
 import com.equipo10.juego.AccesoADatos.Conexion;
+import com.equipo10.juego.AccesoADatos.UserData;
 import com.equipo10.juego.Entidades.Usuario;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -24,11 +24,10 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 public class Ventana extends javax.swing.JFrame {
 
-    FondoPanel fondo=new FondoPanel();
+    Fondos fondo=new Fondos(new ImageIcon(traerImagenBD(4)).getImage());
     Usuario user;       
     public Ventana(Usuario us) {
         this.setContentPane(fondo);
@@ -42,12 +41,13 @@ public class Ventana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new FondoPanel();
+        FondoPanel = new Fondos(new ImageIcon(traerImagenBD(4)).getImage());
         btnAbrir = new javax.swing.JButton();
         lbRare = new javax.swing.JLabel();
         lbImagen = new javax.swing.JLabel();
         lbNombre = new javax.swing.JLabel();
         txtUser = new javax.swing.JLabel();
+        btnInventario = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,27 +70,37 @@ public class Ventana extends javax.swing.JFrame {
         txtUser.setFont(new java.awt.Font("Myanmar Text", 1, 14)); // NOI18N
         txtUser.setForeground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+        btnInventario.setText("Inventario");
+        btnInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInventarioActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout FondoPanelLayout = new javax.swing.GroupLayout(FondoPanel);
+        FondoPanel.setLayout(FondoPanelLayout);
+        FondoPanelLayout.setHorizontalGroup(
+            FondoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FondoPanelLayout.createSequentialGroup()
+                .addGroup(FondoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(FondoPanelLayout.createSequentialGroup()
                         .addGap(238, 238, 238)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(FondoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbRare, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(FondoPanelLayout.createSequentialGroup()
                         .addGap(276, 276, 276)
                         .addComponent(btnAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(243, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        FondoPanelLayout.setVerticalGroup(
+            FondoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FondoPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -101,7 +111,9 @@ public class Ventana extends javax.swing.JFrame {
                 .addComponent(lbRare, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addComponent(btnInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -110,13 +122,13 @@ public class Ventana extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(FondoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(FondoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -141,9 +153,16 @@ public class Ventana extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAbrirActionPerformed
 
+    private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+        Inventario inv=new Inventario(user);
+        inv.setVisible(true);
+        inv.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnInventarioActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel FondoPanel;
     private javax.swing.JButton btnAbrir;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton btnInventario;
     private javax.swing.JLabel lbImagen;
     private javax.swing.JLabel lbNombre;
     private javax.swing.JLabel lbRare;
@@ -151,7 +170,7 @@ public class Ventana extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-    private void SetImageLabel(JLabel labelName, BufferedImage root) {
+    public void SetImageLabel(JLabel labelName, BufferedImage root) {
         ImageIcon image =new ImageIcon(root);
          Icon icon=new ImageIcon(
                  image.getImage().getScaledInstance(labelName.getWidth(), labelName.getHeight(), Image.SCALE_DEFAULT));
@@ -159,7 +178,7 @@ public class Ventana extends javax.swing.JFrame {
          this.repaint();
      }
     
-    private BufferedImage traerImagenBD(int id){
+    public static BufferedImage traerImagenBD(int id){
         Connection con=Conexion.getConexion("pj");
         
         
@@ -273,7 +292,7 @@ public class Ventana extends javax.swing.JFrame {
     
     private void guardarEnInventario(int id,String rareza){
         Connection con=Conexion.getConexion("inventarios");
-         int id_inv=inventario_id();
+         int id_inv=UserData.traerIDInventario(user);
          if(id_inv!=-1){
         String sql="INSERT INTO contenido (id_inventario,id_personaje,Rareza) Values (?,?,?)";
             try {
@@ -290,44 +309,5 @@ public class Ventana extends javax.swing.JFrame {
    
          }
     }
-    private int inventario_id(){
-        Connection con=Conexion.getConexion("inventarios");
-        //El usuario ya tiene inventario?
-        String sql="Select id_inventario From inventario where id_us=?";
-        try {
-            PreparedStatement ps=con.prepareStatement(sql);
-            ps.setInt(1, user.getId_us());
-            ResultSet rs=ps.executeQuery();
-            //si tiene retorno el id del inventario del usuario
-            if(rs.next()){
-                return rs.getInt(1);
-            }else{ //si no tiene lo creo y devuelvo el id del inventario
-                PreparedStatement insertar=con.prepareStatement("INSERT INTO inventario (id_us) Values (?)",Statement.RETURN_GENERATED_KEYS);
-                insertar.setInt(1, user.getId_us());
-                insertar.executeUpdate();
-                ResultSet resultado=insertar.getGeneratedKeys();
-                if(resultado.next()){
-                return resultado.getInt(1);
-                }
-            }
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "error al ingrsar a la tabla inventario "+ex.fillInStackTrace());
-        }
-        return -1;
-    }
-    class FondoPanel extends JPanel{
-    private Image imagen;
     
-    @Override
-    public void paint(Graphics g){
-        imagen=new ImageIcon(traerImagenBD(4)).getImage();
-        
-        g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
-        
-        setOpaque(false);
-        
-        super.paint(g);
-    }
-}
 }
